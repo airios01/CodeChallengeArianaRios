@@ -1,7 +1,13 @@
+''' 
+Ariana I. Rios Montaner
+Unit tests for functions in main.py
+
+'''
+
 import pytest
 import requests
 import ipaddress
-from main import parser, get_rules, get_rules_tmp, check_compliance  
+from main import parser, get_rules_tmp, check_compliance  
 from rule import Rule                    
 
 ## Verifying that the parser creates rule object correctly
@@ -120,16 +126,6 @@ def test_getRules():
 
     # Check that the data was processed correctly
     assert len(data) == 2
-    
-# 	80
-# IpRanges	
-# 0	"138.25.47.147/7"
-# 1	"239.172.158.124/3"
-# 2	"131.52.42.69/20"
-# ToPort	80
-# Action	"Allow"
-# Direction	"Ingress"
-# RuleId	"440"
 
 # Sample data for testing
 compliant_rules = [
@@ -156,36 +152,39 @@ non_compliant_rules = [
          80, "Allow", "Ingress")
 ]
 
+## Test compliant rules sample
 def test_compliant_rules():
     result = check_compliance(compliant_rules)
     expected_result = {
-        "102": 1,
-        "228": 1,
-        "328": 1,
-        "99": 1
+        "102": "COMPLIANT",
+        "228": "COMPLIANT",
+        "328": "COMPLIANT",
+        "99": "COMPLIANT"
     }
     assert result == expected_result
 
+## Test non-compliant rules sample
 def test_non_compliant_rules():
     result = check_compliance(non_compliant_rules)
     expected_result = {
-        "101": 0,
-        "103": 0,
-        "440": 0
+        "101": "NON_COMPLIANT",
+        "103": "NON_COMPLIANT",
+        "440": "NON_COMPLIANT"
     }
     assert result == expected_result
 
+## Test both samples
 def test_mixed_rules():
     mixed_rules = compliant_rules + non_compliant_rules
     result = check_compliance(mixed_rules)
     expected_result = {
-        "102": 1,
-        "228": 1,
-        "328": 1,
-        "99" : 1,
-        "101": 0,
-        "103": 0,
-        "440": 0
+        "102": "COMPLIANT",
+        "228": "COMPLIANT",
+        "328": "COMPLIANT",
+        "99" : "COMPLIANT",
+        "101": "NON_COMPLIANT",
+        "103": "NON_COMPLIANT",
+        "440": "NON_COMPLIANT"
     }
     assert result == expected_result
 
