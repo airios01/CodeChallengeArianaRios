@@ -1,3 +1,10 @@
+'''
+
+Ariana I. Rios Montaner
+Unit tests to make sure the rule class is implemented correctly
+
+'''
+
 import pytest 
 from rule import Rule
 
