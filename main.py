@@ -97,15 +97,15 @@ def get_rules_tmp(url=None, data=None):
 # with the rule ID and compliancy.
 def check_compliance(rules):
     # List of non_compliant IPs
-    non_compliant_ips = [
+    restricted_ips = [
         "236.216.246.119", "109.3.194.189", 
         "36.229.68.87", "21.90.154.237", "91.172.88.105"
     ]
     # List of ports to flag
-    non_compliant_ports = [22, 80, 443, -1]
+    restricted_ports = [22, 80, 443, -1]
     
     # Convert non-compliant IPs to ipaddress objects
-    non_compliant_ips = [ipaddress.ip_address(ip) for ip in non_compliant_ips]
+    restricted_ips = [ipaddress.ip_address(ip) for ip in restricted_ips]
     
     # Dictionary with results
     compliance_results = {}
@@ -120,12 +120,12 @@ def check_compliance(rules):
         action = rule.get_Action()
         
         # Check for compliance 
-        # If the direction is Ingress and the action is "Allow", keep checking
+        # If the direction is "Ingress" and the action is "Allow", keep checking
         # to see if the rule is compliant
         if direction == "Ingress" and action == "Allow":
             # If the fromPort or the toPort is 22, 80, 443, or -1, keep 
             # checking if the rule is compliant
-            if (from_port in non_compliant_ports or to_port in non_compliant_ports):
+            if (from_port in restricted_ports or to_port in restricted_ports):
                 # Iterate through the range of the ips in the rule
                 for cidr in ip_ranges:
                     try:
@@ -133,13 +133,12 @@ def check_compliance(rules):
                         # addresses, if any of these IPs falls in the range of
                         # restricted ips, the rule is non-compliant.
                         network = ipaddress.ip_network(cidr, strict=False)
-                        if any(ip in network for ip in non_compliant_ips):
+                        if any(ip in network for ip in restricted_ips):
                             compliance_results[rule_id] = "NON_COMPLIANT"
                             break
-                    except ValueError:
+                    except ValueError as e:
                         # Handle invalid CIDR notation, if needed
-                        compliance_results[rule_id] = "NON_COMPLIANT"
-                        break
+                        raise ValueError(f"Invalid CIDR notation error: {e}")
         # Rule is compliant
                 else:
                     # If none of the non-compliant IPs fall within the range
