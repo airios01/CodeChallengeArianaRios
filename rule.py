@@ -1,4 +1,9 @@
-## Class that represents each firewall rule that is iterated. 
+''' 
+
+Ariana I. Rios Montaner
+Class that represents each firewall rule that is iterated. 
+
+'''
 
 class Rule:
     def __init__(self, RuleId, FromPort, IpRanges, ToPort, Action, Direction):
@@ -59,7 +64,7 @@ class Rule:
         else:
             raise ValueError('Action must be either "Allow" or "Deny"')
 
-    # Getter and Setter for Direction (string)
+    # Getter and Setter for Direction (string, must be "Ingress" or "Egress")
     def get_Direction(self):
         return self._Direction
 
