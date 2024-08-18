@@ -26,12 +26,12 @@ def parser(data):
     
     # Assign each value to a variable, create the object, and append to rule array
     for rule_data in items:
-        RuleId = rule_data.get("RuleId", "")
-        FromPort = int(rule_data.get("FromPort", -1))
-        IpRanges = rule_data.get("IpRanges", [])
-        ToPort = int(rule_data.get("ToPort", -1))
-        Action = rule_data.get("Action", "Allow")
-        Direction = rule_data.get("Direction", "Ingress")
+        RuleId = rule_data.get("RuleId")
+        FromPort = int(rule_data.get("FromPort"))
+        IpRanges = rule_data.get("IpRanges")
+        ToPort = int(rule_data.get("ToPort"))
+        Action = rule_data.get("Action")
+        Direction = rule_data.get("Direction")
         
         rule = Rule(RuleId, FromPort, IpRanges, ToPort, Action, Direction)
         rules.append(rule)
