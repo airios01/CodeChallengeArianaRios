@@ -114,7 +114,6 @@ def check_compliance(rules):
     for rule in rules:
         rule_id = rule.get_RuleId()
         from_port = rule.get_FromPort()
-        to_port = rule.get_ToPort()
         ip_ranges = rule.get_IpRanges()
         direction = rule.get_Direction()
         action = rule.get_Action()
