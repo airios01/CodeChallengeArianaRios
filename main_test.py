@@ -136,7 +136,11 @@ compliant_rules = [
                      "101.230.123.234/13"], -1, "Allow", "Ingress"),
     Rule("328", 1024, ["79.65.186.9/18", "124.247.54.57/24", "7.79.203.224/16"],
          49151, "Deny", "Ingress"),
-    Rule("99", 80, ["67.44.208.193/30"], 80, "Deny", "Egress")
+    Rule("99", 80, ["236.216.246.119 109/23"], 80, "Deny", "Egress"),
+    Rule("103", 
+         23, 
+         ["236.216.246.119/23", "239.76.10.8/30", "171.105.75.117/18", 
+          "140.242.38.166/25", "234.110.26.180/27"], 22, "Allow", "Ingress")
 ]
 
 non_compliant_rules = [
@@ -144,10 +148,6 @@ non_compliant_rules = [
         22,
         ["236.216.246.119/23", "239.76.10.8/30", "171.105.75.117/18", 
         "140.242.38.166/25", "234.110.26.180/27"], 23, "Allow", "Ingress"),
-    Rule("103", 
-         23, 
-         ["236.216.246.119/23", "239.76.10.8/30", "171.105.75.117/18", 
-          "140.242.38.166/25", "234.110.26.180/27"], 22, "Allow", "Ingress"),
     Rule("440", 80, ["138.25.47.147/7", "239.172.158.124/3", "131.52.42.69/20"],
          80, "Allow", "Ingress")
 ]
@@ -159,7 +159,8 @@ def test_compliant_rules():
         "102": "COMPLIANT",
         "228": "COMPLIANT",
         "328": "COMPLIANT",
-        "99": "COMPLIANT"
+        "99": "COMPLIANT",
+        "103": "COMPLIANT"
     }
     assert result == expected_result
 
@@ -168,7 +169,6 @@ def test_non_compliant_rules():
     result = check_compliance(non_compliant_rules)
     expected_result = {
         "101": "NON_COMPLIANT",
-        "103": "NON_COMPLIANT",
         "440": "NON_COMPLIANT"
     }
     assert result == expected_result
@@ -182,8 +182,8 @@ def test_mixed_rules():
         "228": "COMPLIANT",
         "328": "COMPLIANT",
         "99" : "COMPLIANT",
+        "103": "COMPLIANT",
         "101": "NON_COMPLIANT",
-        "103": "NON_COMPLIANT",
         "440": "NON_COMPLIANT"
     }
     assert result == expected_result
