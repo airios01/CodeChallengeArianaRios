@@ -125,7 +125,7 @@ def check_compliance(rules):
         if direction == "Ingress" and action == "Allow":
             # If the fromPort or the toPort is 22, 80, 443, or -1, keep 
             # checking if the rule is compliant
-            if (from_port in restricted_ports or to_port in restricted_ports):
+            if (from_port in restricted_ports):
                 # Iterate through the range of the ips in the rule
                 for cidr in ip_ranges:
                     try:
